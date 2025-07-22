@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đặt Dịch Vụ Du Lịch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    form {
+      background-color: #7ef3f1;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📋 Biểu mẫu đặt dịch vụ</h2>
+
+  <form action="https://formsubmit.co/hungsupan@gmail.com" method="POST">
+    
+    <label>🧍‍♂️ Tên người đặt:</label>
+    <input type="text" name="Tên người đặt" required>
+
+    <label>☎️ Số điện thoại (WhatsApp):</label>
+    <input type="tel" name="Số điện thoại hoặc WhatsApp" placeholder="+84 912 345 678" required>
+
+    <label>👥 Số lượng người:</label>
+    <input type="number" name="Số lượng người" min="1" required>
+
+    <label>📆 Check-in:</label>
+    <input type="date" id="checkin" name="Ngày check-in" required>
+
+    <label>📆 Check-out:</label>
+    <input type="date" id="checkout" name="Ngày check-out" required>
+
+    <label>📌 Hạng phòng:</label>
+    <select id="hangPhong" name="Hạng phòng" required>
+      <option value="" disabled selected>-- Chọn hạng phòng --</option>
+      <option value="single" data-gia="250000">single room – 250.000đ/đêm</option>
+      <option value="double" data-gia="300000">double room – 300.000đ/đêm</option>
+      <option value="triple" data-gia="400000">triple room – 400.000đ/đêm</option>
+      <option value="quable" data-gia="600000">quable room – 600.000đ/đêm</option>
+      <option value="family" data-gia="800000">family room – 800.000đ/đêm</option>
+      <option value="dormitory" data-gia="150000">dormitory room – 150.000đ/đêm</option>
+    </select>
+
+    <label>🍽️ Ăn sáng:</label>
+    <select id="ansang" name="Ăn sáng" required>
+      <option value="ansang" data-gia="50000">Ăn sáng: 50.000 vnđ/ngày</option>
+      <option value="khong" data-gia="0">Không ăn sáng: 0 vnđ</option>
+    </select>
+
+    <label>📆 Số đêm đã đặt:</label>
+    <input type="number" id="soDem" name="Số đêm" readonly>
+
+    <label>💵 Tổng giá tiền:</label>
+    <input type="text" id="giaTien" name="Tổng giá tiền" readonly>
+
+    <p style="text-align: center;"><i><strong>NOTE:</strong> <u>thanh toán tại cơ sở</u></i></p>
+
+    <p>📅 Ngày đặt: <span id="today"></span></p>
+    <input type="hidden" name="Ngày đặt dịch vụ" id="hiddenToday">
+
+    <label>✍️ Ghi chú (nếu có):</label>
+    <textarea name="Ghi chú" rows="4" placeholder="Ví dụ: có trẻ nhỏ, ăn chay, cần xe đón..."></textarea>
+
+    <!-- Bảo mật và chuyển hướng -->
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://example.com/thankyou.html">
+
+    <button type="submit">Gửi đăng ký</button>
+  </form>
+
+  <!-- JavaScript cuối trang -->
+  <script>
+    const checkin = document.getElementById("checkin");
+    const checkout = document.getElementById("checkout");
+    const hangPhong = document.getElementById("hangPhong");
+    const anSang = document.getElementById("ansang");
+    const soDemInput = document.getElementById("soDem");
+    const giaTienInput = document.getElementById("giaTien");
+
+    function formatCurrency(number) {
+      return number.toLocaleString("vi-VN") + " đ";
+    }
+
+    function tinhTien() {
+      if (!checkin.value || !checkout.value) return;
+
+      const inDate = new Date(checkin.value);
+      const outDate = new Date(checkout.value);
+
+      const selectedPhong = hangPhong.options[hangPhong.selectedIndex];
+      const selectedAnSang = anSang.options[anSang.selectedIndex];
+
+      if (outDate > inDate && selectedPhong && selectedAnSang) {
+        const soDem = Math.ceil((outDate - inDate) / (1000 * 60 * 60 * 24));
+        const donGia = parseInt(selectedPhong.getAttribute("data-gia"));
+        const giaAnSang = parseInt(selectedAnSang.getAttribute("data-gia"));
+        const tongTien = soDem * (donGia + giaAnSang);
+
+        soDemInput.value = soDem;
+        giaTienInput.value = formatCurrency(tongTien);
+      } else {
+        soDemInput.value = 0;
+        giaTienInput.value = "";
+      }
+    }
+
+    // Gắn sự kiện thay đổi
+    checkin.addEventListener("change", tinhTien);
+    checkout.addEventListener("change", tinhTien);
+    hangPhong.addEventListener("change", tinhTien);
+    anSang.addEventListener("change", tinhTien);
+
+    // Gán ngày hôm nay
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    const formattedDate = dd + '/' + mm + '/' + yyyy;
+
+    document.getElementById("today").textContent = formattedDate;
+    document.getElementById("hiddenToday").value = formattedDate;
+  </script>
+
+</body>
+</html>

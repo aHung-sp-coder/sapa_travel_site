@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dịch vụ - Sa Pa Travel</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: sans-serif; background: #f5f5f5; padding: 20px; }
+    #comment-box { width: 500px; margin: 0 auto; }
+    #comment-list { background: #fff; padding: 10px; border: 1px solid #ccc; max-height: 300px; overflow-y: auto; }
+    .comment { border-bottom: 1px solid #eee; padding: 5px 0; }
+    #input-area { margin-top: 10px; display: flex; gap: 10px; }
+    input, textarea { padding: 10px; width: 100%; }
+    button { padding: 10px 20px; }
+    .review {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+.review p {
+  margin: 5px 0;
+}
+  </style>
+  
+</head>
+<body>
+
+  <!-- HEADER CHUNG -->
+  <header>
+    <div class="header-container">
+      <h1>SA PA TRAVEL</h1>
+      <p>Khám phá vẻ đẹp Tây Bắc cùng chúng tôi</p>
+    </div>
+    <nav>
+      <a href="index.html">Trang chủ</a>
+      <a href="about.html">Giới thiệu</a>
+      <a href="trang-dich-vu-chinh.html">Dịch vụ</a>
+      <a href="contact.html">Liên hệ</a>
+    </nav>
+  </header>
+
+  <!-- NỘI DUNG CHÍNH -->
+  <main>
+    <div>
+      <h1  style="text-align: center;">Các Dịch Vụ</h1>
+
+      <section>
+        <h2><a href="bus-ticket.html">🚍 Vé xe buýt</a></h2>
+        <img src="/anh-xe-bus/cabin-bus-single.jpg" alt="cabin-bus" width="40%">
+      </section>
+
+      <section>
+        <h2><a href="tour.html">🏞️ Thông tin Tour</a></h2>
+        <img src="/anh-xe-bus/1ban-cat-cat-sapa.jpg" alt="ban-catcat" width="40%">
+        <img src="/anh-xe-bus/Tour-trekking.jpg" alt="trecking--tour" width="40%">
+      </section>
+
+      <section>
+        <h2><a href="xe-may.html">🛵 Giá thuê xe máy</a></h2>
+        <img src="/anh-xe-bus/thue-xe-may-sa-pa-2.jpg" alt="thue-xe-may" width="40%"> 
+        <img src="/anh-xe-bus/diep-hang-thue-xe-may-o-sa-pa-.jpg " alt="anh-thue-xe-may" width="40%">
+      </section>
+    </div>
+  </main>
+  <!-- phần bình luận -  - comment-->
+   <hr>
+  
+  <div id="comment-box">
+    <main>
+      
+    <h2>📝 Bình luận</h2>
+    
+    <div id="comment-list"></div>
+  
+    <div id="input-area">
+      <input type="text" id="username" placeholder="Tên của bạn">
+      <textarea id="comment" placeholder="Nhập bình luận..." rows="3"></textarea>
+      <button id="submit">Gửi</button>
+    </div>
+  </div>
+  
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js"></script>
+  
+  <script>
+    // 2. Cấu hình Firebase
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+  
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+  
+    // 3. DOM Elements
+    const commentList = document.getElementById("comment-list");
+    const nameInput = document.getElementById("username");
+    const commentInput = document.getElementById("comment");
+    const submitBtn = document.getElementById("submit");
+  
+    // 4. Gửi bình luận
+    submitBtn.onclick = () => {
+      const name = nameInput.value.trim();
+      const comment = commentInput.value.trim();
+  
+      if (name && comment) {
+        db.ref("comments").push({
+          name,
+          comment,
+          time: Date.now()
+        });
+        commentInput.value = "";
+      }
+    };
+  
+    // 5. Hiển thị bình luận
+    db.ref("comments").on("child_added", (snapshot) => {
+      const data = snapshot.val();
+      const div = document.createElement("div");
+      div.classList.add("comment");
+      div.innerHTML = `<strong>${data.name}</strong>: ${data.comment}`;
+      commentList.appendChild(div);
+      commentList.scrollTop = commentList.scrollHeight;
+    });
+  </script>
+    </main>
+    <!--phần đánh giá-->
+    <div class="box">
+  <h2>⭐ ĐÁNH GIÁ CỦA KHÁCH HÀNG</h2>
+  <div class="review">
+    <p><strong>Nguyễn Minh Anh (Hà Nội):</strong></p>
+    <p>“Chuyến trekking tuyệt vời! Hướng dẫn viên thân thiện, cảnh vật hùng vĩ và đồ ăn dân tộc rất ngon. Nhất định sẽ quay lại!”</p>
+    <p>⭐️⭐️⭐️⭐️⭐️</p>
+  </div>
+  <hr />
+  <div class="review">
+    <p><strong>Trần Văn Hoàng (TP.HCM):</strong></p>
+    <p>“Rất ấn tượng với bản Ý Linh Hồ và khung cảnh suối Mường Hoa. Lịch trình phù hợp cho người đi lần đầu.”</p>
+    <p>⭐️⭐️⭐️⭐️☆</p>
+  </div>
+  <hr />
+  <div class="review">
+    <p><strong>Lisa (Germany):</strong></p>
+    <p>“Amazing views and authentic culture! I loved staying in Tả Van village with local people.”</p>
+    <p>⭐️⭐️⭐️⭐️⭐️</p>
+  </div>
+</div>
+
+  <!-- FOOTER CHUNG -->
+  <footer>
+    <p>&copy; 2025 Sa Pa Travel. Thiết kế bởi bạn Hùng ❤️</p>
+  </footer>
+
+</body>
+</html>

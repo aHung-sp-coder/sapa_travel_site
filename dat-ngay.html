@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi,en">
+<head>
+  <meta charset="UTF-8">
+  <title>Đặt Dịch Vụ Du Lịch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    form {
+      background-color: #bab5b5;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📋 Biểu mẫu đặt dịch vụ</h2>
+
+  <form action="https://formsubmit.co/hungsupan@gmail.com" method="POST">
+    
+    <label>🧍‍♂️ Tên người đặt:</label>
+    <input type="text" name="Tên người đặt" required>
+
+    <label for="phone">📞 Số điện thoại (WhatsApp):</label>
+    <input type="tel" id="phone" name="phone" placeholder="VD: +84 912 345 678" required>
+
+    <label>👥 Số lượng người:</label>
+    <input type="number" name="Số lượng" min="1" required>
+
+    <label>📆 Thời gian sử dụng dịch vụ:</label>
+    <input type="date" name="Ngày sử dụng" required>
+
+    <p>📅 Ngày đặt: <span id="today"></span></p>
+
+<script>
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+  const yyyy = today.getFullYear();
+
+  const formattedDate = dd + '/' + mm + '/' + yyyy;
+  document.getElementById("today").textContent = formattedDate;
+</script>
+    <label>📌 Tên dịch vụ:</label>
+    <select name="Dịch vụ">
+      <option value="Tour 1 day - Ý Linh Hồ - Lao Chải - Tả Van">Tour 1 day - Ý Linh Hồ - Lao Chải - Tả Van</option>
+      <option value="Tour 2 days - Tả Van - Tả Giàng Chải - Sử Pán">Tour 2 days - Tả Van - Tả Giàng Chải - Sử Pán</option>
+      <option value="Khác">Khác</option>
+    </select>
+
+    <label>✍️ Ghi chú (nếu có):</label>
+    <textarea name="Ghi chú" rows="4" placeholder="Ví dụ: có trẻ nhỏ, ăn chay, cần xe đón..."></textarea>
+
+    <!-- Bảo mật và chuyển hướng -->
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://example.com/thankyou.html">
+
+    <button type="submit">Gửi đăng ký</button>
+  </form>
+
+</body>
+</html>
